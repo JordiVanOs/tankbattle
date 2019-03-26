@@ -86,12 +86,13 @@ public class DeferredDecalRenderer : MonoBehaviour
 		buf.GetTemporaryRT (normalsID, -1, -1);
 		buf.Blit (BuiltinRenderTextureType.GBuffer2, normalsID);
 		
+		// render diffuse+normals decals into two MRTs
 		RenderTargetIdentifier[] mrt = {BuiltinRenderTextureType.GBuffer0, BuiltinRenderTextureType.GBuffer2};
 		buf.SetRenderTarget (mrt, BuiltinRenderTextureType.CameraTarget);
-		foreach (var decal in system.m_Decals) {
+		foreach (var decal in system.m_Decals)
+		{
 			buf.DrawMesh (m_CubeMesh, decal.transform.localToWorldMatrix, decal.m_Material);
 		}
-
 		// release temporary normals RT
 		buf.ReleaseTemporaryRT (normalsID);
 	}

@@ -3,16 +3,33 @@
 public class Splatter : MonoBehaviour
 {
     public GameObject decal;
-    public Vector3 spreadRange;
-    public float impactForce;
-    public float gravity;
-    public int maxDecals;
-    public float particleLifeTime;
-    public float minDecalSize;
-    public float maxDecalSize;
-    public bool randomRotation;
-    public bool useNormalSurfaceNormal;
-    public GameObject particleToUse;
+
+    public float randomVelocityFactor; //The spread the particle
+
+    public float impactForce; //force the particle uses -> done
+
+    public int maxDecals; //MaxDecals that spawn -> done
+
+    public float particleLifeTime; //How long do the particle live -> done
+
+
+    public bool randomRotation; //random rotation over y as.
+
+    public bool useNormalSurface; //if true use normal surface if false use the direction it collided
+
+
+    public GameObject particleToUse; //The particle that spawns when an object is hit -> done
+
+    public float minSplaterSize; //min splatter size -> done
+    public float maxSplaterSize; //max splatter size -> done
+
+
+    public float projectSpawnPosOffset; //How far back the object does the projector need to spawn -> done
+
+    public float gravity; //For rigidbody
+
+    public float minDecalSize; //this is in the decal script
+    public float maxDecalSize; //this is in the decal script
 
     // Start is called before the first frame update
     void Start()
@@ -27,13 +44,13 @@ public class Splatter : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit, 100.0f))
+            if (Physics.Raycast(ray, out RaycastHit hit, 100.0f))
             {
                 if (hit.collider.gameObject.isStatic)
                 {
+                    Instantiate(decal, hit.point + hit.normal * projectSpawnPosOffset, Quaternion.FromToRotation(Vector3.up, hit.normal));
                     Vector3 reflect = Vector3.Reflect(ray.direction, hit.normal);
                     SpawnSplatParticles(hit.point, reflect, 10, 10);
                 }
@@ -43,23 +60,33 @@ public class Splatter : MonoBehaviour
 
     public void SpawnSplatParticles(Vector3 spawnPos, Vector3 direction, int strength, int count)
     {
-        SplatParticles splatter = Instantiate(particleToUse, spawnPos, Quaternion.Euler(direction)).GetComponent<SplatParticles>();
-        splatter.SetDirection(direction.normalized);
+        for (int i = 0; i < maxDecals; i++)
+        {
+            Vector3 newVel = direction;
+
+            newVel *= impactForce;
+            
+            Vector3 randomVel = new Vector3(RandomValue(), RandomValue(), RandomValue()).normalized;
+
+            randomVel *= randomVelocityFactor;
+
+            newVel += randomVel;
+            
+            GameObject splatter = Instantiate(particleToUse, spawnPos, Quaternion.Euler(direction));
+
+            float randomSize = Random.Range(minSplaterSize, maxSplaterSize);
+            splatter.transform.localScale = splatter.transform.localScale * randomSize;
+
+            splatter.transform.Rotate(newVel);
+
+
+            splatter.GetComponent<SplatParticles>().Init(newVel, particleLifeTime, impactForce);
+        }
     }
 
-    public void SetSize()
+    private float RandomValue()
     {
-        float sizeMod = Random.Range(minDecalSize, maxDecalSize);
-        transform.localScale *= sizeMod;
-    }
-
-    public void SetRotation()
-    {
-        float randomRotationZ = Random.Range(-360, 360);
-        float randomRotationX = Random.Range(-360, 360);
-        float randomRotationY = Random.Range(-360, 360);
-
-        transform.rotation = Quaternion.Euler(randomRotationX, randomRotationY, randomRotationZ);
+        return Random.Range(-1f, 1f);
     }
 
     private void SimulateSplatParticles()

@@ -3,6 +3,13 @@
 [ExecuteInEditMode]
 public class Decal : MonoBehaviour
 {
+	public enum Kind
+	{
+		DiffuseOnly,
+		NormalsOnly,
+		Both
+	}
+	public Kind m_Kind;
 	public Material m_Material;
 
 	public void OnEnable()
