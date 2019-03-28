@@ -10,6 +10,7 @@ public class SplatParticles : MonoBehaviour
     private float gravity;
     private bool useNormalSurface;
     private bool randomYRotation;
+    private Vector3 hitPositon;
 
     public void Start()
     {
@@ -28,23 +29,17 @@ public class SplatParticles : MonoBehaviour
             if (!hit.collider.CompareTag("Splatter"))
             {
                 Vector3 dir = Vector3.zero;
-                Vector3 spawnPos = hit.point + hit.normal * 0.1f;
+                Vector3 spawnPos = hit.point + hit.normal * 0.2f;
 
-                if (useNormalSurface)
-                {
-                    dir = hit.normal;
-                }
-                else
-                {
-                    dir = hit.normal + ray.direction;
-                }
+                dir = useNormalSurface ? hit.normal : -ray.direction;
 
-                Quaternion rotation = Quaternion.FromToRotation(Vector3.up, dir);
+                Quaternion rotation = Quaternion.FromToRotation(dir, Vector3.up);
                 if (randomYRotation)
                 {
-                    float randomY = Random.Range(-360.0f, 360.0f);
-                    rotation = Quaternion.Euler(rotation.eulerAngles.x, randomY, rotation.eulerAngles.y);
+                    Quaternion randomRotation = Quaternion.AngleAxis(Random.Range(0f, 360f), Vector3.up);
+                    rotation *= randomRotation;
                 }
+
 
                 Instantiate(decal, spawnPos, rotation);
 
@@ -61,7 +56,7 @@ public class SplatParticles : MonoBehaviour
             DestroyImmediate(gameObject);
     }
 
-    internal void Init(Vector3 velocity, float lifeTime, float impactForce, GameObject decal, bool useNormalSurface, bool randomYRotation)
+    internal void Init(Vector3 velocity, float lifeTime, float impactForce, GameObject decal, bool useNormalSurface, bool randomYRotation, Vector3 hitPositon)
     {
         this.velocity = velocity;
         this.lifeTime = lifeTime;
@@ -69,6 +64,7 @@ public class SplatParticles : MonoBehaviour
         this.decal = decal;
         this.useNormalSurface = useNormalSurface;
         this.randomYRotation = randomYRotation;
+        this.hitPositon = hitPositon;
     }
 
     public void OnCollisionEnter(Collision other)
