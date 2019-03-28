@@ -75,7 +75,7 @@ public class Splatter : MonoBehaviour
 
             ChangeSize(splatter);
 
-            splatter.GetComponent<SplatParticles>().Init(AddSpread(direction), particleLifeTime, impactForce, decal, useNormalSurface, randomYRotation);
+            splatter.GetComponent<SplatParticles>().Init(AddSpread(direction), particleLifeTime, impactForce, decal, useNormalSurface, randomYRotation, spawnPos);
         }
     }
 
@@ -93,7 +93,7 @@ public class Splatter : MonoBehaviour
 
         Vector3 randomVel = new Vector3(RandomValue(), RandomValue(), RandomValue()).normalized;
 
-        randomVel *= randomVelocityFactor;
+        randomVel *= randomVelocityFactor * RandomValue();
 
         newVel += randomVel;
 
