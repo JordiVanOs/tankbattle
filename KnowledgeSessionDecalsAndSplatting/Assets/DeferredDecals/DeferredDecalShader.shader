@@ -102,7 +102,7 @@ Shader "Decal/DeferredDecal"
 				// Get angle between decal projector and surface normal
 				half3 gbufferNormal = tex2D(_GbufferNormals, uv).rgb * 2.0 - 1.0;
 
-				half3 forward = mul(half3(0, 0, 1), norMat);
+				half3 forward = normalize(mul(half3(0, 0, 1), norMat));
 				float surfaceAngle = dot(forward, gbufferNormal);
 				
 				float angleFade = remap (surfaceAngle, _AngleFadeStart, _AngleFadeEnd, 0.0, 1.0);
