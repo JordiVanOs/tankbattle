@@ -47,7 +47,7 @@ public class DeferredDecalRenderer : MonoBehaviour {
 		}
 	}
 
-	public void OnWillRenderObject() {
+	public void OnRenderObject() {
 		var act = gameObject.activeInHierarchy && enabled;
 		if (!act) {
 			OnDisable();
