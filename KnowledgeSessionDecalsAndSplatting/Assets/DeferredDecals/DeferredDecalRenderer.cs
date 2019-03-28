@@ -3,12 +3,10 @@ using UnityEngine.Rendering;
 using System.Collections;
 using System.Collections.Generic;
 
-// See _ReadMe.txt
+public class DeferredDecalSystem {
 
-public class DeferredDecalSystem
-{
-	static DeferredDecalSystem m_Instance;
-	static public DeferredDecalSystem instance {
+	public static DeferredDecalSystem m_Instance;
+	public static DeferredDecalSystem instance {
 		get {
 			if (m_Instance == null)
 				m_Instance = new DeferredDecalSystem();
@@ -18,39 +16,40 @@ public class DeferredDecalSystem
 
 	internal HashSet<Decal> m_Decals = new HashSet<Decal>();
 
-	public void AddDecal (Decal d)
-	{
-		RemoveDecal (d);
-		m_Decals.Add (d);
+	public void AddDecal(Decal d) {
+		RemoveDecal(d);
+		m_Decals.Add(d);
 	}
-	public void RemoveDecal (Decal d)
-	{
-		m_Decals.Remove (d);
+
+	public void RemoveDecal(Decal d) {
+		m_Decals.Remove(d);
 	}
 }
 
 [ExecuteInEditMode]
-public class DeferredDecalRenderer : MonoBehaviour
-{
-	public Mesh m_CubeMesh;
-	private Dictionary<Camera,CommandBuffer> m_Cameras = new Dictionary<Camera,CommandBuffer>();
+public class DeferredDecalRenderer : MonoBehaviour {
+	
+	private Dictionary<Camera, CommandBuffer> m_Cameras = new Dictionary<Camera, CommandBuffer>();
+	private Mesh m_CubeMesh;
 
-	public void OnDisable()
-	{
-		foreach (var cam in m_Cameras)
-		{
-			if (cam.Key)
-			{
+	public void Awake() {
+		// Get cube primitive used for rendering
+		GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        m_CubeMesh = gameObject.GetComponent<MeshFilter>().sharedMesh;
+        DestroyImmediate(gameObject);
+	}
+
+	public void OnDisable() {
+		foreach (var cam in m_Cameras) {
+			if (cam.Key) {
 				cam.Key.RemoveCommandBuffer (CameraEvent.BeforeLighting, cam.Value);
 			}
 		}
 	}
 
-	public void OnWillRenderObject()
-	{
+	public void OnWillRenderObject() {
 		var act = gameObject.activeInHierarchy && enabled;
-		if (!act)
-		{
+		if (!act) {
 			OnDisable();
 			return;
 		}
@@ -60,40 +59,26 @@ public class DeferredDecalRenderer : MonoBehaviour
 			return;
 
 		CommandBuffer buf = null;
-		if (m_Cameras.ContainsKey(cam))
-		{
+		if (m_Cameras.ContainsKey(cam)) {
 			buf = m_Cameras[cam];
 			buf.Clear ();
-		}
-		else
-		{
+		} else {
 			buf = new CommandBuffer();
 			buf.name = "Deferred decals";
 			m_Cameras[cam] = buf;
 
-			// set this command buffer to be executed just before deferred lighting pass
-			// in the camera
 			cam.AddCommandBuffer (CameraEvent.BeforeLighting, buf);
 		}
-
-		//@TODO: in a real system should cull decals, and possibly only
-		// recreate the command buffer when something has changed.
-
-		var system = DeferredDecalSystem.instance;
-
-		// copy g-buffer normals into a temporary RT
-		var normalsID = Shader.PropertyToID("_NormalsCopy");
-		buf.GetTemporaryRT (normalsID, -1, -1);
-		buf.Blit (BuiltinRenderTextureType.GBuffer2, normalsID);
 		
-		// render diffuse+normals decals into two MRTs
-		RenderTargetIdentifier[] mrt = {BuiltinRenderTextureType.GBuffer0, BuiltinRenderTextureType.GBuffer2};
-		buf.SetRenderTarget (mrt, BuiltinRenderTextureType.CameraTarget);
-		foreach (var decal in system.m_Decals)
-		{
+		RenderTargetIdentifier[] renderTargets = {
+			BuiltinRenderTextureType.GBuffer0, // Albedo
+			BuiltinRenderTextureType.GBuffer1, // Specular + Roughness
+			BuiltinRenderTextureType.GBuffer2 // Normals
+		};
+
+		buf.SetRenderTarget (renderTargets, BuiltinRenderTextureType.CameraTarget);
+		foreach (var decal in DeferredDecalSystem.instance.m_Decals) {
 			buf.DrawMesh (m_CubeMesh, decal.transform.localToWorldMatrix, decal.m_Material);
 		}
-		// release temporary normals RT
-		buf.ReleaseTemporaryRT (normalsID);
 	}
 }
