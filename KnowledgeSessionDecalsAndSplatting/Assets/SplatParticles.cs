@@ -31,20 +31,13 @@ public class SplatParticles : MonoBehaviour
                 Vector3 dir = Vector3.zero;
                 Vector3 spawnPos = hit.point + hit.normal * 0.2f;
 
-                if (useNormalSurface)
-                {
-                    dir = hit.normal;
-                }
-                else
-                {
-                    dir = -ray.direction;
-                }
+                dir = useNormalSurface ? hit.normal : -ray.direction;
 
-                Quaternion rotation = Quaternion.FromToRotation(-dir, Vector3.up);
+                Quaternion rotation = Quaternion.FromToRotation(dir, Vector3.up);
                 if (randomYRotation)
                 {
-                    float randomY = Random.Range(-360.0f, 360.0f);
-                    rotation = Quaternion.Euler(rotation.eulerAngles.x, randomY, rotation.eulerAngles.z);
+                    Quaternion randomRotation = Quaternion.AngleAxis(Random.Range(0f, 360f), Vector3.up);
+                    rotation *= randomRotation;
                 }
 
 

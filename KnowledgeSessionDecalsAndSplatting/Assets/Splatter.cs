@@ -71,7 +71,7 @@ public class Splatter : MonoBehaviour
     {
         for (int i = 0; i < maxDecals; i++)
         {
-            GameObject splatter = Instantiate(particleToUse, spawnPos, Quaternion.Euler(direction), splatHolder.transform);
+            GameObject splatter = Instantiate(particleToUse, spawnPos, Quaternion.identity, splatHolder.transform);
 
             ChangeSize(splatter);
 

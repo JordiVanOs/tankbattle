@@ -314,13 +314,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1077087524}
-  m_LocalRotation: {x: 0.50075555, y: -0.41322634, z: 0.70422703, w: -0.28731897}
-  m_LocalPosition: {x: 0.43, y: 2.37, z: 1.25}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 17.113, y: -279.45398, z: -121.08001}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &1077087527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -433,7 +433,7 @@ Transform:
   m_GameObject: {fileID: 1981073766}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.02, y: 0, z: -5.83}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -454,16 +454,16 @@ MonoBehaviour:
   decal: {fileID: 7504956538604733528, guid: 562411428859591468f1591cc9f740d1, type: 3}
   randomVelocityFactor: 2
   impactForce: 5
-  maxDecals: 1000
+  maxDecals: 5
   particleLifeTime: 10
-  reflectStrength: 0
+  reflectStrength: 1
   reflectImpact: 1
   particleToUse: {fileID: 8393693830925896832, guid: a1ecbeaf9b6f09c4a9ef24f4b1b41e8d,
     type: 3}
   minSplaterSize: 0.2
   maxSplaterSize: 1
   projectSpawnPosOffset: 0.1
-  randomYRotation: 0
+  randomYRotation: 1
   useNormalSurface: 0
   minDecalSize: 10
   maxDecalSize: 10
