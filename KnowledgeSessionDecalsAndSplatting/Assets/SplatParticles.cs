@@ -11,17 +11,21 @@ public class SplatParticles : MonoBehaviour
     private bool useNormalSurface;
     private bool randomYRotation;
     private Vector3 hitPositon;
+    private float minDecalSize;
+    private float maxDecalSize;
+    private float decalLifeTime;
+    private Transform decalHolder;
 
     public void Start()
     {
         gravity = 9.807f;
+        decalHolder = GameObject.FindGameObjectWithTag("DecalHolder").transform;
     }
 
     private void Update()
     {
         velocity.y -= gravity * Time.deltaTime;
-
-
+        
         Ray ray = new Ray(transform.position, velocity.normalized);
 
         if (Physics.Raycast(ray, out RaycastHit hit, velocity.magnitude * Time.deltaTime))
@@ -39,9 +43,12 @@ public class SplatParticles : MonoBehaviour
                     Quaternion randomRotation = Quaternion.AngleAxis(Random.Range(0f, 360f), Vector3.up);
                     rotation *= randomRotation;
                 }
+                
+                GameObject instantiatedDecal = Instantiate(decal, spawnPos, rotation, decalHolder);
 
+                ChangeSize(instantiatedDecal);
 
-                Instantiate(decal, spawnPos, rotation);
+                instantiatedDecal.GetComponent<decalDestroyer>().setLifeTime(decalLifeTime);
 
                 Destroy(gameObject);
             }
@@ -56,7 +63,7 @@ public class SplatParticles : MonoBehaviour
             DestroyImmediate(gameObject);
     }
 
-    internal void Init(Vector3 velocity, float lifeTime, float impactForce, GameObject decal, bool useNormalSurface, bool randomYRotation, Vector3 hitPositon)
+    internal void Init(Vector3 velocity, float lifeTime, float impactForce, GameObject decal, bool useNormalSurface, bool randomYRotation, Vector3 hitPositon, float minDecalSize, float maxDecalSize, float decalLifeTime)
     {
         this.velocity = velocity;
         this.lifeTime = lifeTime;
@@ -65,9 +72,16 @@ public class SplatParticles : MonoBehaviour
         this.useNormalSurface = useNormalSurface;
         this.randomYRotation = randomYRotation;
         this.hitPositon = hitPositon;
+        this.minDecalSize = minDecalSize;
+        this.maxDecalSize = maxDecalSize;
+        this.decalLifeTime = decalLifeTime;
     }
-
-    public void OnCollisionEnter(Collision other)
+    
+    private void ChangeSize(GameObject decal)
     {
+        float randomSizeX = Random.Range(minDecalSize, maxDecalSize);
+        float randomSizeZ = Random.Range(minDecalSize, maxDecalSize);
+
+        decal.transform.localScale = new Vector3(randomSizeX, decal.transform.localScale.y, randomSizeZ);
     }
 }
