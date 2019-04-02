@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Decal))]
+[RequireComponent(typeof(DeferredDecal))]
 public class DecalFader : MonoBehaviour
 {
-    private Decal decal;
+    private DeferredDecal decal;
     private float decalLifeTime;
     private float decalLifeCounter;
     private float decalStartFadeTime;
@@ -33,7 +33,7 @@ public class DecalFader : MonoBehaviour
 
     internal void Init(float decalLifeTime, float decalStartFadeTime, Material decalMaterial)
     {
-        decal = GetComponent<Decal>();
+        decal = GetComponent<DeferredDecal>();
         decal.m_Material = decalMaterial;
         this.decalLifeTime = decalLifeTime;
         this.decalStartFadeTime = decalStartFadeTime;
