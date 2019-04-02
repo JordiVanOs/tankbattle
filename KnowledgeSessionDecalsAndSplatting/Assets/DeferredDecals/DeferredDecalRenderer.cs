@@ -27,65 +27,72 @@ public class DeferredDecalSystem {
 }
 
 [ExecuteInEditMode]
+[RequireComponent(typeof(Camera))]
 public class DeferredDecalRenderer : MonoBehaviour {
 	
-	private Dictionary<Camera, CommandBuffer> m_Cameras = new Dictionary<Camera, CommandBuffer>();
 	private Mesh m_CubeMesh;
+
+	private CommandBuffer buffer;
+	private MaterialPropertyBlock properties;
+	private int strengthId;
+	private int gbufferNormalsId;
 
 	public void Awake() {
 		// Get cube primitive used for rendering
 		GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
         m_CubeMesh = gameObject.GetComponent<MeshFilter>().sharedMesh;
         DestroyImmediate(gameObject);
+
+        buffer = new CommandBuffer();
+        buffer.name = "Deferred decals";
+
+        properties = new MaterialPropertyBlock();
+		strengthId = Shader.PropertyToID("_Strength");
+		gbufferNormalsId = Shader.PropertyToID("_GbufferNormals");
 	}
 
-	public void OnDisable() {
-		foreach (var cam in m_Cameras) {
-			if (cam.Key) {
-				cam.Key.RemoveCommandBuffer (CameraEvent.BeforeLighting, cam.Value);
-			}
-		}
-	}
-
-	public void OnRenderObject() {
-		var act = gameObject.activeInHierarchy && enabled;
-		if (!act) {
+	public void OnEnable() {
+		var active = gameObject.activeInHierarchy && enabled;
+		if (!active) {
 			OnDisable();
 			return;
 		}
 
-		var cam = Camera.current;
-		if (!cam)
-			return;
+		Camera camera = GetComponent<Camera>();
+		Camera editorCamera = UnityEditor.SceneView.lastActiveSceneView.camera;
 
-		CommandBuffer buf = null;
-		if (m_Cameras.ContainsKey(cam)) {
-			buf = m_Cameras[cam];
-			buf.Clear ();
-		} else {
-			buf = new CommandBuffer();
-			buf.name = "Deferred decals";
-			m_Cameras[cam] = buf;
+		camera.AddCommandBuffer(CameraEvent.BeforeLighting, buffer);
+		editorCamera.AddCommandBuffer(CameraEvent.BeforeLighting, buffer);
+	}
 
-			cam.AddCommandBuffer (CameraEvent.BeforeLighting, buf);
-		}
+	public void OnDisable() {
+		Camera camera = GetComponent<Camera>();
+		Camera editorCamera = UnityEditor.SceneView.lastActiveSceneView.camera;
+
+		camera.RemoveCommandBuffer(CameraEvent.BeforeLighting, buffer);
+		editorCamera.RemoveCommandBuffer(CameraEvent.BeforeLighting, buffer);
+	}
+	int frame = 0;
+	public void OnRenderObject() {
+		// Clear previous render
+		buffer.Clear();
 
 		// Blit the Gbuffer normals so we can read from them in the shader
-		var gbufferNormals = Shader.PropertyToID("_GbufferNormals");
-		buf.GetTemporaryRT(gbufferNormals, -1, -1);
-		buf.Blit(BuiltinRenderTextureType.GBuffer2, gbufferNormals);
-		
+		buffer.GetTemporaryRT(gbufferNormalsId, -1, -1);
+		buffer.Blit(BuiltinRenderTextureType.GBuffer2, gbufferNormals);
+
 		RenderTargetIdentifier[] renderTargets = {
 			BuiltinRenderTextureType.GBuffer0, // Albedo
 			BuiltinRenderTextureType.GBuffer1, // Specular + Roughness
 			BuiltinRenderTextureType.GBuffer2 // Normals
 		};
 
-		buf.SetRenderTarget (renderTargets, BuiltinRenderTextureType.CameraTarget);
+		buffer.SetRenderTarget (renderTargets, BuiltinRenderTextureType.CameraTarget);
 		foreach (var decal in DeferredDecalSystem.instance.m_Decals) {
-			buf.DrawMesh (m_CubeMesh, decal.transform.localToWorldMatrix, decal.m_Material);
+			properties.SetFloat(strengthId, decal.strength);
+			buffer.DrawMesh(m_CubeMesh, decal.transform.localToWorldMatrix, decal.m_Material, 0, -1, properties);
 		}
 
-		buf.ReleaseTemporaryRT(gbufferNormals);
+		buffer.ReleaseTemporaryRT(gbufferNormals);
 	}
 }

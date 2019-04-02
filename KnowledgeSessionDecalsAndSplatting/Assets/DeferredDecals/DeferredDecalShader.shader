@@ -4,7 +4,8 @@ Shader "Decal/DeferredDecal"
 {
 	Properties
 	{
-		_Transparency ("Transparency", Range(0.0, 1.0)) = 1.0
+		[HideInInspector] _Strength ("Strength", Range(0.0, 1.0)) = 1.0
+		
 		_AlbedoMap ("Albedo + Alpha", 2D) = "white" {}
 		_AlbedoStrength ("Albedo Strength", Range(0.0, 1.0)) = 1.0
 		_NormalMap ("Normal", 2D) = "bump" {}
@@ -55,7 +56,7 @@ Shader "Decal/DeferredDecal"
 				return o;
 			}
 
-			float _Transparency;
+			float _Strength;
 			sampler2D _AlbedoMap;
 			float _AlbedoStrength;
 			sampler2D _NormalMap;
@@ -93,7 +94,7 @@ Shader "Decal/DeferredDecal"
 				fixed4 albedo = tex2D (_AlbedoMap, i.uv);
 				float smoothness = tex2D (_SmoothnessMap, i.uv).r;
 
-				float alpha = albedo.a * _Transparency;
+				float alpha = albedo.a * _Strength;
 				
 				fixed3 normal = UnpackNormal(tex2D(_NormalMap, i.uv));
 				half3x3 norMat = half3x3(i.orientationX, i.orientationZ, i.orientation);
