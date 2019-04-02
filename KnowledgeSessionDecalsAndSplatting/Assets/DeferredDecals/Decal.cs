@@ -13,7 +13,7 @@ public class Decal : MonoBehaviour {
 
 	public Material m_Material;
 
-	public void OnEnable() {
+    public void OnEnable() {
 		DeferredDecalSystem.instance.AddDecal(this);
 	}
 

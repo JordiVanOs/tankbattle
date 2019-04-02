@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7504956538604733531}
   - component: {fileID: 3039482810151191927}
   m_Layer: 0
-  m_Name: DecalBlood
+  m_Name: DecalProjector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   strength: 1
-  m_Material: {fileID: 2100000, guid: c1ecc6ed1454a074195581b2d70be447, type: 2}
+  m_Material: {fileID: 0}
 --- !u!114 &3039482810151191927
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -22,6 +22,8 @@ public class Editor_Splatter : Editor // Our script inherits from Editor
         GUILayout.BeginVertical();
         GUILayout.Label("The splatter script", EditorStyles.boldLabel);
 
+
+
         _target.randomVelocityFactor = EditorGUILayout.FloatField("Spread of the particles", _target.randomVelocityFactor);
         
         _target.impactForce = EditorGUILayout.FloatField("The force the particle uses", _target.impactForce);
@@ -48,7 +50,8 @@ public class Editor_Splatter : Editor // Our script inherits from Editor
 
             _target.maxSplaterSize = EditorGUILayout.FloatField("Maximum particle size", _target.maxSplaterSize);
 
-            _target.decalMaterial = (Material)EditorGUILayout.ObjectField("Splatter to be used", _target.particleToUse, typeof(Material), true);
+            _target.decal = (GameObject)EditorGUILayout.ObjectField("Decal to be used", _target.decal, typeof(Decal), true);
+            _target.decalMaterial = (Material)EditorGUILayout.ObjectField("Override decal material", _target.decalMaterial, typeof(Material), true);
 
             if (_target.decalMaterial == null)
             {
@@ -62,7 +65,7 @@ public class Editor_Splatter : Editor // Our script inherits from Editor
 
                 _target.decalLifeTime = EditorGUILayout.FloatField("Time until decal is destroyed", _target.decalLifeTime);
 
-                _target.decalStartFadeTime = EditorGUILayout.FloatField("Maximum particle size", _target.decalStartFadeTime);
+                _target.decalStartFadeTime = EditorGUILayout.FloatField("Decal fade time", _target.decalStartFadeTime);
 
                 _target.minDecalSize = EditorGUILayout.FloatField("Minimum decal size", _target.minDecalSize);
 

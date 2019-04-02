@@ -51,7 +51,7 @@ public class SplatParticles : MonoBehaviour
                 ChangeSize(instantiatedDecal);
 
                 //TODO remove decaldestroyer script and add the functionality to the decal script.
-                instantiatedDecal.GetComponent<decalDestroyer>().Init(decalLifeTime);
+                instantiatedDecal.GetComponent<DecalFader>().Init(decalLifeTime, decalStartFadeTime, decalMaterial);
 
                 Destroy(gameObject);
             }
