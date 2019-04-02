@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [ExecuteInEditMode]
-public class Decal : MonoBehaviour {
+public class DeferredDecal : MonoBehaviour {
 
 	private static Color gizmoColour = new Color(0.0f, 0.7f, 1f, 0.0f);
 	private static Color gizmoColourWire = new Color(0.0f, 0.7f, 1f, 0.2f);
