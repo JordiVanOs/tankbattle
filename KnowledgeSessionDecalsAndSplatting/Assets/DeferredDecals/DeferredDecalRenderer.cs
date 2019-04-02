@@ -72,14 +72,14 @@ public class DeferredDecalRenderer : MonoBehaviour {
 		camera.RemoveCommandBuffer(CameraEvent.BeforeLighting, buffer);
 		editorCamera.RemoveCommandBuffer(CameraEvent.BeforeLighting, buffer);
 	}
-	int frame = 0;
+
 	public void OnRenderObject() {
 		// Clear previous render
 		buffer.Clear();
 
 		// Blit the Gbuffer normals so we can read from them in the shader
 		buffer.GetTemporaryRT(gbufferNormalsId, -1, -1);
-		buffer.Blit(BuiltinRenderTextureType.GBuffer2, gbufferNormals);
+		buffer.Blit(BuiltinRenderTextureType.GBuffer2, gbufferNormalsId);
 
 		RenderTargetIdentifier[] renderTargets = {
 			BuiltinRenderTextureType.GBuffer0, // Albedo
@@ -93,6 +93,6 @@ public class DeferredDecalRenderer : MonoBehaviour {
 			buffer.DrawMesh(m_CubeMesh, decal.transform.localToWorldMatrix, decal.m_Material, 0, -1, properties);
 		}
 
-		buffer.ReleaseTemporaryRT(gbufferNormals);
+		buffer.ReleaseTemporaryRT(gbufferNormalsId);
 	}
 }
