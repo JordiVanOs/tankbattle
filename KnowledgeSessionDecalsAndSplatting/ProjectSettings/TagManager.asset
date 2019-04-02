@@ -6,6 +6,9 @@ TagManager:
   tags:
   - SplatHolder
   - Splatter
+  - DecalHolder
+  - PlayerWeapon
+  - Crosshair
   layers:
   - Default
   - TransparentFX

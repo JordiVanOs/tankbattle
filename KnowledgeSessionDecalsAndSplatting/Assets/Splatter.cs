@@ -3,7 +3,7 @@
 public class Splatter : MonoBehaviour
 {
     //Splatter
-    public GameObject splatHolder;
+    private GameObject splatHolder;
     public GameObject decal;
 
     //Particles
@@ -17,53 +17,31 @@ public class Splatter : MonoBehaviour
     public float minSplaterSize; //min splatter size -> done
     public float maxSplaterSize; //max splatter size -> done
     public float projectSpawnPosOffset; //How far back the object does the projector need to spawn -> done
-
-
+    
     //projectors
     public bool randomYRotation; //use a random y rotation to spawn the projector.
 
     public bool useNormalSurface; //use the direction of the raycast to spawn the projector or use the normal surface to spawn the projector.
+    public float decalLifeTime;
     public float minDecalSize; //this is in the decal script
     public float maxDecalSize; //this is in the decal script
+    
+    private Transform playWeapon;
 
+    private Transform crossHair;
     // Start is called before the first frame update
     void Start()
     {
         splatHolder = GameObject.FindGameObjectWithTag("SplatHolder");
+        playWeapon = GameObject.FindGameObjectWithTag("PlayerWeapon").transform;
     }
 
     // Update is called once per frame
     void Update()
     {
-        SimulateSplatParticles();
-
         if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out RaycastHit hit, 100.0f))
-            {
-                if (hit.collider.gameObject.isStatic)
-                {
-
-                    Vector3 dir;
-                    Vector3 spawnPos;
-
-                    if (reflectImpact)
-                    {
-                        Vector3 reflect = Vector3.Reflect(ray.direction, hit.normal);
-                        dir = Vector3.Lerp(hit.normal, reflect, reflectStrength);
-                        spawnPos = hit.point + hit.normal * 0.2f;
-                    }
-                    else
-                    {
-                        dir = -hit.normal + ray.direction;
-                        spawnPos = hit.point + -hit.normal * 0.2f;
-                    }
-                    
-                    SpawnSplatParticles(spawnPos, dir);
-                }
-            }
+            SimulateSplatParticles();
         }
     }
 
@@ -75,7 +53,7 @@ public class Splatter : MonoBehaviour
 
             ChangeSize(splatter);
 
-            splatter.GetComponent<SplatParticles>().Init(AddSpread(direction), particleLifeTime, impactForce, decal, useNormalSurface, randomYRotation, spawnPos);
+            splatter.GetComponent<SplatParticles>().Init(AddSpread(direction), particleLifeTime, impactForce, decal, useNormalSurface, randomYRotation, spawnPos, minDecalSize, maxDecalSize, decalLifeTime);
         }
     }
 
@@ -107,6 +85,29 @@ public class Splatter : MonoBehaviour
 
     private void SimulateSplatParticles()
     {
+        Ray ray = new Ray(playWeapon.position, playWeapon.forward);//Camera.main.ScreenPointToRay(Input.mousePosition);
 
+        if (Physics.Raycast(ray, out RaycastHit hit, 100.0f))
+        {
+            if (hit.collider.gameObject.isStatic)
+            {
+                Vector3 dir;
+                Vector3 spawnPos;
+
+                if (reflectImpact)
+                {
+                    Vector3 reflect = Vector3.Reflect(ray.direction, hit.normal);
+                    dir = Vector3.Lerp(hit.normal, reflect, reflectStrength);
+                    spawnPos = hit.point + hit.normal * 0.2f;
+                }
+                else
+                {
+                    dir = ray.direction;
+                    spawnPos = hit.point + -hit.normal * 0.2f;
+                }
+
+                SpawnSplatParticles(spawnPos, dir);
+            }
+        }
     }
 }
