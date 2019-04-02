@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor; // Dont forget to add this as we are extending the Editor
 using System.Collections;
+using System;
 
 [CustomEditor(typeof(Splatter))] //Set tour script to extend the DoCake.cs
 public class Editor_Splatter : Editor // Our script inherits from Editor
@@ -50,8 +51,12 @@ public class Editor_Splatter : Editor // Our script inherits from Editor
 
             _target.maxSplaterSize = EditorGUILayout.FloatField("Maximum particle size", _target.maxSplaterSize);
 
-            _target.decal = (GameObject)EditorGUILayout.ObjectField("Decal to be used", _target.decal, typeof(DeferredDecal), true);
-            _target.decalMaterial = (Material)EditorGUILayout.ObjectField("Override decal material", _target.decalMaterial, typeof(Material), true);
+            try {
+                DeferredDecal deferredDecal = (DeferredDecal) EditorGUILayout.ObjectField("Decal to be used", _target.decal, typeof(DeferredDecal), false);
+                _target.decal = deferredDecal == null ? null : deferredDecal.gameObject;
+            } catch (InvalidCastException e) {}
+
+            _target.decalMaterial = (Material) EditorGUILayout.ObjectField("Override decal material", _target.decalMaterial, typeof(Material), true);
 
             if (_target.decalMaterial == null)
             {

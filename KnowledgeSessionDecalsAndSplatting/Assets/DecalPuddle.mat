@@ -26,7 +26,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _AlbedoMap:
-        m_Texture: {fileID: 2800000, guid: a30b5b9ddf3e13a45842289c0a39c5b8, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5ab4a5f985024ff47ba94fbe5b04f881, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AnisotropyMap:
@@ -98,7 +98,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SmoothnessMap:
-        m_Texture: {fileID: 2800000, guid: a30b5b9ddf3e13a45842289c0a39c5b8, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5ab4a5f985024ff47ba94fbe5b04f881, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecularColorMap:
