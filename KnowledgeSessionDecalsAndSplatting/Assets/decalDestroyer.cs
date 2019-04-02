@@ -25,7 +25,7 @@ public class decalDestroyer : MonoBehaviour
         }
     }
 
-    internal void setLifeTime(float decalLifeTime)
+    internal void Init(float decalLifeTime)
     {
         this.decalLifeTime = decalLifeTime;
     }

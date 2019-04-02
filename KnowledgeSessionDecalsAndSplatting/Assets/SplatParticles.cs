@@ -3,18 +3,20 @@
 public class SplatParticles : MonoBehaviour
 {
     private Vector3 velocity;
-    private float lifeTime;
     private float lifeTimer;
     private float impactForce;
-    private GameObject decal;
     private float gravity;
+    private Transform decalHolder;
     private bool useNormalSurface;
     private bool randomYRotation;
     private Vector3 hitPositon;
     private float minDecalSize;
     private float maxDecalSize;
     private float decalLifeTime;
-    private Transform decalHolder;
+    private GameObject decal;
+    private float lifeTime;
+    private Material decalMaterial;
+    private float decalStartFadeTime;
 
     public void Start()
     {
@@ -48,7 +50,8 @@ public class SplatParticles : MonoBehaviour
 
                 ChangeSize(instantiatedDecal);
 
-                instantiatedDecal.GetComponent<decalDestroyer>().setLifeTime(decalLifeTime);
+                //TODO remove decaldestroyer script and add the functionality to the decal script.
+                instantiatedDecal.GetComponent<decalDestroyer>().Init(decalLifeTime);
 
                 Destroy(gameObject);
             }
@@ -63,7 +66,7 @@ public class SplatParticles : MonoBehaviour
             DestroyImmediate(gameObject);
     }
 
-    internal void Init(Vector3 velocity, float lifeTime, float impactForce, GameObject decal, bool useNormalSurface, bool randomYRotation, Vector3 hitPositon, float minDecalSize, float maxDecalSize, float decalLifeTime)
+    internal void Init(Vector3 velocity, float lifeTime, float impactForce, GameObject decal, bool useNormalSurface, bool randomYRotation, Vector3 hitPositon, float minDecalSize, float maxDecalSize, float decalLifeTime, Material decalMaterial, float decalStartFadeTime)
     {
         this.velocity = velocity;
         this.lifeTime = lifeTime;
@@ -75,6 +78,8 @@ public class SplatParticles : MonoBehaviour
         this.minDecalSize = minDecalSize;
         this.maxDecalSize = maxDecalSize;
         this.decalLifeTime = decalLifeTime;
+        this.decalMaterial = decalMaterial;
+        this.decalStartFadeTime = decalStartFadeTime;
     }
     
     private void ChangeSize(GameObject decal)
