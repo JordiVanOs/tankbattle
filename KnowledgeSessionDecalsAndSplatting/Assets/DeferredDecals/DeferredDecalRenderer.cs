@@ -14,14 +14,14 @@ public class DeferredDecalSystem {
 		}
 	}
 
-	internal HashSet<Decal> m_Decals = new HashSet<Decal>();
+	internal HashSet<DeferredDecal> m_Decals = new HashSet<DeferredDecal>();
 
-	public void AddDecal(Decal d) {
+	public void AddDecal(DeferredDecal d) {
 		RemoveDecal(d);
 		m_Decals.Add(d);
 	}
 
-	public void RemoveDecal(Decal d) {
+	public void RemoveDecal(DeferredDecal d) {
 		m_Decals.Remove(d);
 	}
 }
@@ -37,7 +37,11 @@ public class DeferredDecalRenderer : MonoBehaviour {
 	private int strengthId;
 	private int gbufferNormalsId;
 
-	public void Awake() {
+	private void OnUse() {
+		// It already has been initialised
+		if (buffer != null)
+			return;
+
 		// Get cube primitive used for rendering
 		GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
         m_CubeMesh = gameObject.GetComponent<MeshFilter>().sharedMesh;
@@ -52,28 +56,19 @@ public class DeferredDecalRenderer : MonoBehaviour {
 	}
 
 	public void OnEnable() {
-		var active = gameObject.activeInHierarchy && enabled;
-		if (!active) {
-			OnDisable();
-			return;
-		}
-
-		Camera camera = GetComponent<Camera>();
-		Camera editorCamera = UnityEditor.SceneView.lastActiveSceneView.camera;
-
-		camera.AddCommandBuffer(CameraEvent.BeforeLighting, buffer);
-		editorCamera.AddCommandBuffer(CameraEvent.BeforeLighting, buffer);
+		OnUse();
 	}
 
 	public void OnDisable() {
-		Camera camera = GetComponent<Camera>();
-		Camera editorCamera = UnityEditor.SceneView.lastActiveSceneView.camera;
-
-		camera.RemoveCommandBuffer(CameraEvent.BeforeLighting, buffer);
-		editorCamera.RemoveCommandBuffer(CameraEvent.BeforeLighting, buffer);
+		OnUse();
+		buffer.Clear();
 	}
 
 	public void OnRenderObject() {
+		OnUse();
+		Camera.current.RemoveCommandBuffer(CameraEvent.BeforeLighting, buffer);
+		Camera.current.AddCommandBuffer(CameraEvent.BeforeLighting, buffer);
+
 		// Clear previous render
 		buffer.Clear();
 
