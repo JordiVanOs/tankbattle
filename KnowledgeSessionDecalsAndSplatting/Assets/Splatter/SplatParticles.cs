@@ -43,7 +43,7 @@ public class SplatParticles : MonoBehaviour
                 if (hit.collider.gameObject.isStatic)
                 {
                     Vector3 dir = Vector3.zero;
-                    Vector3 spawnPos = hit.point + hit.normal * 0.2f;
+                    Vector3 spawnPos = hit.point + hit.normal * 0.1f;
 
                     dir = useNormalSurface ? hit.normal : -ray.direction;
 
@@ -54,7 +54,7 @@ public class SplatParticles : MonoBehaviour
                         rotation *= randomRotation;
                     }
 
-                    GameObject instantiatedDecal = Instantiate(decal, spawnPos, rotation, decalHolder.transform);
+                    GameObject instantiatedDecal = Instantiate(decal, spawnPos, Quaternion.Inverse(rotation), decalHolder.transform);
 
                     ChangeSize(instantiatedDecal);
 
@@ -93,9 +93,8 @@ public class SplatParticles : MonoBehaviour
     
     private void ChangeSize(GameObject decal)
     {
-        float randomSizeX = Random.Range(minDecalSize, maxDecalSize);
-        float randomSizeZ = Random.Range(minDecalSize, maxDecalSize);
+        float randomSize = Random.Range(minDecalSize, maxDecalSize);
 
-        decal.transform.localScale = new Vector3(randomSizeX, decal.transform.localScale.y, randomSizeZ);
+        decal.transform.localScale = new Vector3(randomSize, decal.transform.localScale.y, randomSize);
     }
 }

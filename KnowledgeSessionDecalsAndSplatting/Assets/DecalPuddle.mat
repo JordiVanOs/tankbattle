@@ -137,8 +137,8 @@ Material:
     - _AlphaCutoffPostpass: 0.5
     - _AlphaCutoffPrepass: 0.5
     - _AlphaCutoffShadow: 0.5
-    - _AngleFadeEnd: 0.5
-    - _AngleFadeStart: 0
+    - _AngleFadeEnd: 1
+    - _AngleFadeStart: 1
     - _Anisotropy: 0
     - _BlendMode: 0
     - _CoatMask: 0

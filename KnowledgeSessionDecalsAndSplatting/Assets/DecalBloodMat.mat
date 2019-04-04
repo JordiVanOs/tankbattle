@@ -137,8 +137,8 @@ Material:
     - _AlphaCutoffPostpass: 0.5
     - _AlphaCutoffPrepass: 0.5
     - _AlphaCutoffShadow: 0.5
-    - _AngleFadeEnd: 1
-    - _AngleFadeStart: 1
+    - _AngleFadeEnd: 0.816
+    - _AngleFadeStart: 0.707
     - _Anisotropy: 0
     - _BlendMode: 0
     - _CoatMask: 0
@@ -212,7 +212,7 @@ Material:
     - _NormalBlendSrc: 0
     - _NormalMapSpace: 0
     - _NormalScale: 1
-    - _NormalStrength: 0.482
+    - _NormalStrength: 0.556
     - _PPDLodThreshold: 5
     - _PPDMaxSamples: 15
     - _PPDMinSamples: 5
@@ -228,7 +228,7 @@ Material:
     - _Smoothness: 0.5
     - _SmoothnessRemapMax: 1
     - _SmoothnessRemapMin: 0
-    - _SmoothnessStrength: 0.283
+    - _SmoothnessStrength: 0.529
     - _SpecularAAScreenSpaceVariance: 0.1
     - _SpecularAAThreshold: 0.2
     - _SrcBlend: 1
