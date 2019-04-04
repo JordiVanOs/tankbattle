@@ -49,7 +49,7 @@ Shader "Decal/DeferredDecal"
 				o.pos = UnityObjectToClipPos (float4(v,1));
 				o.uv = v.xz+0.5;
 				o.screenUV = ComputeScreenPos (o.pos);
-				o.ray = mul (UNITY_MATRIX_MV, float4(v,1)).xyz * float3(-1,-1,1);
+				o.ray = UnityObjectToViewPos(v).xyz * half3(-1, -1, 1);
 				o.orientation = mul ((float3x3)unity_ObjectToWorld, float3(0,1,0));
 				o.orientationX = mul ((float3x3)unity_ObjectToWorld, float3(1,0,0));
 				o.orientationZ = mul ((float3x3)unity_ObjectToWorld, float3(0,0,1));
@@ -98,10 +98,11 @@ Shader "Decal/DeferredDecal"
 				
 				fixed3 normal = UnpackNormal(tex2D(_NormalMap, i.uv));
 				half3x3 norMat = half3x3(i.orientationX, i.orientationZ, i.orientation);
-				normal = mul (normal, norMat);
+				normal = normalize (mul (normal, norMat));
 
 				// Get angle between decal projector and surface normal
 				half3 gbufferNormal = tex2D(_GbufferNormals, uv).rgb * 2.0 - 1.0;
+				gbufferNormal = normalize (gbufferNormal);
 
 				half3 forward = normalize(mul(half3(0, 0, 1), norMat));
 				float surfaceAngle = dot(forward, gbufferNormal);
@@ -112,7 +113,7 @@ Shader "Decal/DeferredDecal"
 				
 				outDiffuse = half4(albedo.rgb, alpha * _AlbedoStrength);
 				outParam = half4(1.0, 1.0, 1.0, smoothness * alpha * _SmoothnessStrength);
-				outNormal = fixed4(normal * 0.5 + 0.5, alpha * _NormalStrength);
+				outNormal = fixed4(gbufferNormal * 0.5 + 0.5, alpha * _NormalStrength);
 			}
 			ENDCG
 		}		

@@ -18,6 +18,8 @@ public class SplatParticles : MonoBehaviour
     private Material decalMaterial;
     private float decalStartFadeTime;
 
+    private static Quaternion rotate90 = Quaternion.Euler(-90, 0, 0);
+
     public void Start()
     {
         gravity = 9.807f;
@@ -42,19 +44,21 @@ public class SplatParticles : MonoBehaviour
             {
                 if (hit.collider.gameObject.isStatic)
                 {
-                    Vector3 dir = Vector3.zero;
+                    Vector3 dir = useNormalSurface ? -hit.normal : ray.direction;
                     Vector3 spawnPos = hit.point + hit.normal * 0.1f;
 
-                    dir = useNormalSurface ? hit.normal : -ray.direction;
+                    //Quaternion rotation = Quaternion.FromToRotation(dir, Vector3.up);
+                    Quaternion rotation = Quaternion.LookRotation(dir, new Vector3(0, 1, 0));
+                    rotation *= rotate90;
 
-                    Quaternion rotation = Quaternion.FromToRotation(dir, Vector3.up);
                     if (randomYRotation)
                     {
                         Quaternion randomRotation = Quaternion.AngleAxis(Random.Range(0f, 360f), Vector3.up);
                         rotation *= randomRotation;
                     }
+                    
 
-                    GameObject instantiatedDecal = Instantiate(decal, spawnPos, Quaternion.Inverse(rotation), decalHolder.transform);
+                    GameObject instantiatedDecal = Instantiate(decal, spawnPos, rotation, decalHolder.transform);
 
                     ChangeSize(instantiatedDecal);
 
@@ -95,6 +99,6 @@ public class SplatParticles : MonoBehaviour
     {
         float randomSize = Random.Range(minDecalSize, maxDecalSize);
 
-        decal.transform.localScale = new Vector3(randomSize, decal.transform.localScale.y, randomSize);
+        decal.transform.localScale = decal.transform.localScale * randomSize;
     }
 }

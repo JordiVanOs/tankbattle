@@ -84,6 +84,9 @@ public class DeferredDecalRenderer : MonoBehaviour {
 
 		buffer.SetRenderTarget (renderTargets, BuiltinRenderTextureType.CameraTarget);
 		foreach (var decal in DeferredDecalSystem.instance.m_Decals) {
+			if (decal.m_Material == null)
+				continue;
+			
 			properties.SetFloat(strengthId, decal.strength);
 			buffer.DrawMesh(m_CubeMesh, decal.transform.localToWorldMatrix, decal.m_Material, 0, -1, properties);
 		}
