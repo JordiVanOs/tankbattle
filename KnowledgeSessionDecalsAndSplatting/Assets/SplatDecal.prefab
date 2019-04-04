@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7504956538604733529}
   - component: {fileID: 7504956538604733531}
+  - component: {fileID: 5813311318393633362}
   m_Layer: 0
   m_Name: SplatDecal
   m_TagString: Untagged
@@ -45,3 +46,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   strength: 1
   m_Material: {fileID: 0}
+--- !u!114 &5813311318393633362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7504956538604733528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdee9017484a2b04290c10dc839214a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

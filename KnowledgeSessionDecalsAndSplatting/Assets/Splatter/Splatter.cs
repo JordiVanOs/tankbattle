@@ -30,26 +30,19 @@ public class Splatter : MonoBehaviour
     public float minDecalSize; //this is in the decal script
     public float maxDecalSize; //this is in the decal script
     
-    private Transform playWeapon;
-
-    private Transform crossHair;
     // Start is called before the first frame update
     void Start()
     {
         splatHolder = GameObject.FindGameObjectWithTag("SplatHolder");
-        playWeapon = GameObject.FindGameObjectWithTag("PlayerWeapon").transform;
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
+        if (splatHolder == null)
         {
-            SimulateSplatParticles();
+            splatHolder = new GameObject("SplatHolder");
+            splatHolder.tag = "SplatHolder";
         }
     }
 
-    public void SpawnSplatParticles(Vector3 spawnPos, Vector3 direction)
+    private void SpawnSplatParticles(Vector3 spawnPos, Vector3 direction)
     {
         for (int i = 0; i < maxDecals; i++)
         {
@@ -87,31 +80,23 @@ public class Splatter : MonoBehaviour
         return Random.Range(-1f, 1f);
     }
 
-    private void SimulateSplatParticles()
+    public void Splat(Vector3 direction, Vector3 impactSurfaceNormal, Vector3 position)
     {
-        Ray ray = new Ray(playWeapon.position, playWeapon.forward);//Camera.main.ScreenPointToRay(Input.mousePosition);
+        Vector3 dir;
+        Vector3 spawnPos;
 
-        if (Physics.Raycast(ray, out RaycastHit hit, 100.0f))
+        if (reflectImpact)
         {
-            if (hit.collider.gameObject.isStatic)
-            {
-                Vector3 dir;
-                Vector3 spawnPos;
-
-                if (reflectImpact)
-                {
-                    Vector3 reflect = Vector3.Reflect(ray.direction, hit.normal);
-                    dir = Vector3.Lerp(hit.normal, reflect, reflectStrength);
-                    spawnPos = hit.point + hit.normal * 0.2f;
-                }
-                else
-                {
-                    dir = ray.direction;
-                    spawnPos = hit.point + -hit.normal * 0.2f;
-                }
-
-                SpawnSplatParticles(spawnPos, dir);
-            }
+            Vector3 reflect = Vector3.Reflect(direction, impactSurfaceNormal);
+            dir = Vector3.Lerp(impactSurfaceNormal, reflect, reflectStrength);
+            spawnPos = position + impactSurfaceNormal * 0.2f;
         }
+        else
+        {
+            dir = direction;
+            spawnPos = position + -impactSurfaceNormal * 0.2f;
+        }
+
+        SpawnSplatParticles(spawnPos, dir);
     }
 }

@@ -129,7 +129,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &138248128
 Transform:
@@ -215,7 +215,6 @@ GameObject:
   - component: {fileID: 154879997}
   - component: {fileID: 154879996}
   - component: {fileID: 154879995}
-  - component: {fileID: 154879998}
   - component: {fileID: 154879999}
   m_Layer: 0
   m_Name: Main Camera
@@ -288,18 +287,6 @@ Transform:
   m_Father: {fileID: 1568466932}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &154879998
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 154879994}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23c1ce4fb46143f46bc5cb5224c934f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &154879999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -329,7 +316,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &183951482
 Transform:
@@ -404,36 +391,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 183951481}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &264803266
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 264803267}
-  m_Layer: 0
-  m_Name: Decal Holder
-  m_TagString: DecalHolder
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &264803267
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 264803266}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.07711768, y: 8.029238, z: 1.6839962}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &359055049
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,13 +494,44 @@ GameObject:
   - component: {fileID: 446781064}
   - component: {fileID: 446781063}
   - component: {fileID: 446781062}
+  - component: {fileID: 446781061}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &446781061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 446781060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6836f5941925f684b8b635cffa0fa43a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  decal: {fileID: 7504956538604733528, guid: 3a66f973c334dd9478ecd819e3c1340f, type: 3}
+  randomVelocityFactor: 2
+  impactForce: 5
+  maxDecals: 10
+  particleLifeTime: 3
+  reflectStrength: 1
+  reflectImpact: 1
+  particleToUse: {fileID: 8393693830925896832, guid: a1ecbeaf9b6f09c4a9ef24f4b1b41e8d,
+    type: 3}
+  minSplaterSize: 0.2
+  maxSplaterSize: 1
+  randomYRotation: 0
+  decalMaterial: {fileID: 2100000, guid: c1ecc6ed1454a074195581b2d70be447, type: 2}
+  useNormalSurface: 0
+  decalLifeTime: 3
+  decalStartFadeTime: 0
+  minDecalSize: 0
+  maxDecalSize: 0.5
 --- !u!136 &446781062
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -623,7 +611,7 @@ Transform:
   - {fileID: 1352776990}
   - {fileID: 1885058036}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &479094263
 GameObject:
@@ -702,36 +690,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 479094263}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &673218444
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 673218445}
-  m_Layer: 0
-  m_Name: Splat Holder
-  m_TagString: SplatHolder
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &673218445
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 673218444}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1077087524
 GameObject:
   m_ObjectHideFlags: 0
@@ -742,8 +700,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1077087526}
   - component: {fileID: 1077087525}
-  - component: {fileID: 1077087528}
-  - component: {fileID: 1077087527}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -803,30 +759,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!114 &1077087527
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1077087524}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6c2871f720b2af4e9210febdac74517, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1077087528
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1077087524}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1352776989
 GameObject:
   m_ObjectHideFlags: 0
@@ -844,7 +776,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1352776990
 Transform:
@@ -935,7 +867,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1372951150
 Transform:
@@ -1027,7 +959,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1435200071
 Transform:
@@ -1150,7 +1082,7 @@ Transform:
   - {fileID: 359055050}
   - {fileID: 479094264}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &1568466933
 Rigidbody:
@@ -1198,7 +1130,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1790222111
 Transform:
@@ -1289,7 +1221,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1885058036
 Transform:
@@ -1381,7 +1313,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1963016847
 Transform:
@@ -1468,7 +1400,6 @@ GameObject:
   - component: {fileID: 1981073769}
   - component: {fileID: 1981073768}
   - component: {fileID: 1981073767}
-  - component: {fileID: 1981073771}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -1549,33 +1480,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1981073771
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1981073766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6836f5941925f684b8b635cffa0fa43a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  decal: {fileID: 7504956538604733528, guid: 3a66f973c334dd9478ecd819e3c1340f, type: 3}
-  randomVelocityFactor: 2
-  impactForce: 5
-  maxDecals: 10
-  particleLifeTime: 3
-  reflectStrength: 1
-  reflectImpact: 0
-  particleToUse: {fileID: 8393693830925896832, guid: a1ecbeaf9b6f09c4a9ef24f4b1b41e8d,
-    type: 3}
-  minSplaterSize: 0.2
-  maxSplaterSize: 1
-  randomYRotation: 0
-  decalMaterial: {fileID: 2100000, guid: de19ccf2f71f71d459ddd35d49e26b53, type: 2}
-  useNormalSurface: 0
-  decalLifeTime: 3
-  decalStartFadeTime: 0
-  minDecalSize: 0
-  maxDecalSize: 0.5

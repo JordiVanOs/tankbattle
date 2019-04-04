@@ -6,7 +6,7 @@ public class SplatParticles : MonoBehaviour
     private float lifeTimer;
     private float impactForce;
     private float gravity;
-    private Transform decalHolder;
+    private GameObject decalHolder;
     private bool useNormalSurface;
     private bool randomYRotation;
     private Vector3 hitPositon;
@@ -21,7 +21,13 @@ public class SplatParticles : MonoBehaviour
     public void Start()
     {
         gravity = 9.807f;
-        decalHolder = GameObject.FindGameObjectWithTag("DecalHolder").transform;
+        decalHolder = GameObject.FindGameObjectWithTag("DecalHolder");
+
+        if (decalHolder == null)
+        {
+            decalHolder = new GameObject("DecalHolder");
+            decalHolder.tag = "DecalHolder";
+        }
     }
 
     private void Update()
@@ -34,26 +40,29 @@ public class SplatParticles : MonoBehaviour
         {
             if (!hit.collider.CompareTag("Splatter"))
             {
-                Vector3 dir = Vector3.zero;
-                Vector3 spawnPos = hit.point + hit.normal * 0.2f;
-
-                dir = useNormalSurface ? hit.normal : -ray.direction;
-
-                Quaternion rotation = Quaternion.FromToRotation(dir, Vector3.up);
-                if (randomYRotation)
+                if (hit.collider.gameObject.isStatic)
                 {
-                    Quaternion randomRotation = Quaternion.AngleAxis(Random.Range(0f, 360f), Vector3.up);
-                    rotation *= randomRotation;
+                    Vector3 dir = Vector3.zero;
+                    Vector3 spawnPos = hit.point + hit.normal * 0.2f;
+
+                    dir = useNormalSurface ? hit.normal : -ray.direction;
+
+                    Quaternion rotation = Quaternion.FromToRotation(dir, Vector3.up);
+                    if (randomYRotation)
+                    {
+                        Quaternion randomRotation = Quaternion.AngleAxis(Random.Range(0f, 360f), Vector3.up);
+                        rotation *= randomRotation;
+                    }
+
+                    GameObject instantiatedDecal = Instantiate(decal, spawnPos, rotation, decalHolder.transform);
+
+                    ChangeSize(instantiatedDecal);
+
+                    //TODO remove decaldestroyer script and add the functionality to the decal script.
+                    instantiatedDecal.GetComponent<DecalFader>().Init(decalLifeTime, decalStartFadeTime, decalMaterial);
+
+                    Destroy(gameObject);
                 }
-                
-                GameObject instantiatedDecal = Instantiate(decal, spawnPos, rotation, decalHolder);
-
-                ChangeSize(instantiatedDecal);
-
-                //TODO remove decaldestroyer script and add the functionality to the decal script.
-                instantiatedDecal.GetComponent<DecalFader>().Init(decalLifeTime, decalStartFadeTime, decalMaterial);
-
-                Destroy(gameObject);
             }
         }
 
