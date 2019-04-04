@@ -5,7 +5,7 @@ Shader "Decal/DeferredDecal"
 	Properties
 	{
 		[HideInInspector] _Strength ("Strength", Range(0.0, 1.0)) = 1.0
-		
+
 		_AlbedoMap ("Albedo + Alpha", 2D) = "white" {}
 		_AlbedoStrength ("Albedo Strength", Range(0.0, 1.0)) = 1.0
 		_NormalMap ("Normal", 2D) = "bump" {}
@@ -106,7 +106,7 @@ Shader "Decal/DeferredDecal"
 				half3 forward = normalize(mul(half3(0, 0, 1), norMat));
 				float surfaceAngle = dot(forward, gbufferNormal);
 				
-				float angleFade = remap (surfaceAngle, _AngleFadeStart, _AngleFadeEnd, 0.0, 1.0);
+				float angleFade = 1.0 - remap (1.0 - surfaceAngle, _AngleFadeStart, _AngleFadeEnd, 0.0, 1.0);
 				angleFade = clamp(angleFade, 0.0, 1.0);
 				alpha *= angleFade;
 				
